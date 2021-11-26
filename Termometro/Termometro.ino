@@ -2,6 +2,12 @@
 // Dependiendo de la temperatura enciende un led
 // Luego la muestra la temperatura por la lcd
 
+
+/*
+La humedad ideal para el hogar es de 50% con una temperatura de 20 grados
+ */
+
+
 // Librerias del temperatura y humedad
 #include <dht_nonblocking.h>
 // Libreria lcd
@@ -61,7 +67,9 @@ static bool measure_environment( float *temperature, float *humidity )
 void loop(){
     // Variables
     float umbral_frio = 20.0;
-    float umbral_calor = 27.0; 
+    float umbral_calor = 27.0;
+    float umbral_seco = 40.0;
+    float umbral_humedo = 69.9; 
     float temperature;
     float humidity;
 
@@ -76,19 +84,29 @@ void loop(){
     Serial.println( "%" );
 
     if(temperature <= umbral_frio){
-
         Serial.println("Hace frio");
     }
 
     if(temperature >= umbral_calor){
-
         Serial.println("Hace calor");
     }
 
     if(temperature >= umbral_frio && temperature <= umbral_calor){
-
         Serial.println("Temperatura de confort");
     }
+
+    if(humidity < umbral_seco){
+        Serial.println("El ambiente es seco");
+    }
+
+    if(humidity > umbral_humedo){
+        Serial.println("El ambiente es bastante humedo");
+    }
+
+    if(humidity >= umbral_seco && humidity <= umbral_humedo){
+        Serial.println("La humedad en el ambiente esta entre los valores correctos");
+    }
+    
     }
 
     lcd.setCursor(0, 1);
