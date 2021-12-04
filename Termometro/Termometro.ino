@@ -26,15 +26,14 @@ const int ledPinRojo = 6;
 const int ledPinVerde = 5;
 const int ledPinAzul = 3;
 
-
+// Tiempo de espera entre bucles una vez encendido el led que corresponde
+const long int tiempoEspera = 30000;
 
 void setup(){
     // Inicializamos el puerto serie (Modo debug)
     Serial.begin( 9600);
     // Inicializamos el lcd
     lcd.begin(16, 2);
-    // Informacion que sacara el lcd
-    lcd.print("Hello, World!");
     // Definimos los pines de los led como salida
     pinMode(ledPinRojo , OUTPUT);
     pinMode(ledPinVerde , OUTPUT);
@@ -77,7 +76,9 @@ void loop(){
     digitalWrite(ledPinRojo , LOW);
     digitalWrite(ledPinVerde , LOW);
     digitalWrite(ledPinAzul , LOW);
-
+    // Limpiar la pantalla lcd
+    lcd.clear();
+    
 
     
     /* Measure temperature and humidity.  If the functions returns
@@ -93,19 +94,16 @@ void loop(){
     if(temperature <= umbral_frio){
         Serial.println("Hace frio");
         digitalWrite(ledPinAzul , HIGH);
-        delay(1000);
     }
 
     if(temperature >= umbral_calor){
         Serial.println("Hace calor");
         digitalWrite(ledPinRojo , HIGH);
-        delay(1000);
     }
 
     if(temperature >= umbral_frio && temperature <= umbral_calor){
         Serial.println("Temperatura de confort");
         digitalWrite(ledPinVerde , HIGH);
-        delay(1000);
     }
 
     if(humidity < umbral_seco){
@@ -119,12 +117,21 @@ void loop(){
     if(humidity >= umbral_seco && humidity <= umbral_humedo){
         Serial.println("La humedad en el ambiente esta entre los valores correctos");
     }
-    
+     //delay(tiempoEspera);
+
+     // Informacion que sacara el lcd en la fila de arriba
+     lcd.print(temperature);
+     //Escribimos en la fila de abajo
+     lcd.setCursor(0,1);
+
+     // Mensaje
+     lcd.print(humidity);
+     delay(tiempoEspera);
     }
 
-    lcd.setCursor(0, 1);
-    lcd.print(millis() / 1000);
+    //lcd.setCursor(0, 1);
+    //lcd.print(millis() / 1000);
 
 
-    //delay(10000);
+   
 }
