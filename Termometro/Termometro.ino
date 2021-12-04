@@ -21,22 +21,24 @@ LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
 static const int DHT_SENSOR_PIN = 2;
 DHT_nonblocking dht_sensor( DHT_SENSOR_PIN, DHT_SENSOR_TYPE );
 
-// Agregamos los pin necesarios para el led rgb
-#define BLUE 3
-#define GREEN 5
-#define RED 6
+// Agregamos los led
+const int ledPinRojo = 6;
+const int ledPinVerde = 5;
+const int ledPinAzul = 3;
 
 
 
-void setup( )
-{
+void setup(){
     // Inicializamos el puerto serie (Modo debug)
     Serial.begin( 9600);
     // Inicializamos el lcd
     lcd.begin(16, 2);
     // Informacion que sacara el lcd
     lcd.print("Hello, World!");
-
+    // Definimos los pines de los led como salida
+    pinMode(ledPinRojo , OUTPUT);
+    pinMode(ledPinVerde , OUTPUT);
+    pinMode(ledPinAzul , OUTPUT);
 
 
 }
@@ -72,7 +74,12 @@ void loop(){
     float umbral_humedo = 69.9; 
     float temperature;
     float humidity;
+    digitalWrite(ledPinRojo , LOW);
+    digitalWrite(ledPinVerde , LOW);
+    digitalWrite(ledPinAzul , LOW);
 
+
+    
     /* Measure temperature and humidity.  If the functions returns
      true, then a measurement is available. */
     if( measure_environment( &temperature, &humidity ) == true )
@@ -85,14 +92,20 @@ void loop(){
 
     if(temperature <= umbral_frio){
         Serial.println("Hace frio");
+        digitalWrite(ledPinAzul , HIGH);
+        delay(1000);
     }
 
     if(temperature >= umbral_calor){
         Serial.println("Hace calor");
+        digitalWrite(ledPinRojo , HIGH);
+        delay(1000);
     }
 
     if(temperature >= umbral_frio && temperature <= umbral_calor){
         Serial.println("Temperatura de confort");
+        digitalWrite(ledPinVerde , HIGH);
+        delay(1000);
     }
 
     if(humidity < umbral_seco){
