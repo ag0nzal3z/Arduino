@@ -1,11 +1,11 @@
-// Programa que lee la temperatura y la humedad
-// Dependiendo de la temperatura enciende un led
-// Luego la muestra la temperatura por la lcd
-
-
-/*
+/* Programa que lee la temperatura y la humedad
+Dependiendo de la temperatura enciende un led
+Luego muestra la temperatura y humedad por el lcd
 La humedad ideal para el hogar es de 50% con una temperatura de 20 grados
  */
+// Proyecto: Termometro
+// Autor: Alberto Gonzalez
+// Version: 0.5
 
 
 // Librerias del temperatura y humedad
@@ -39,7 +39,6 @@ void setup(){
     pinMode(ledPinVerde , OUTPUT);
     pinMode(ledPinAzul , OUTPUT);
 
-
 }
 
 /*
@@ -67,10 +66,10 @@ static bool measure_environment( float *temperature, float *humidity )
 
 void loop(){
     // Variables
-    float umbral_frio = 20.0;
-    float umbral_calor = 27.0;
-    float umbral_seco = 40.0;
-    float umbral_humedo = 69.9; 
+    const float umbral_frio = 20.0;
+    const float umbral_calor = 27.0;
+    const float umbral_seco = 40.0;
+    const float umbral_humedo = 69.9; 
     float temperature;
     float humidity;
     digitalWrite(ledPinRojo , LOW);
@@ -78,7 +77,11 @@ void loop(){
     digitalWrite(ledPinAzul , LOW);
     // Limpiar la pantalla lcd
     lcd.clear();
-    
+    // Variables de los mensajes que se mostraran por el lcd
+    char mensajeTemperatura;
+    char mensajeHumedad;
+    // Lista con los mensajes
+    String mensajes[] = {"T = ", "H = ", "Hace frio", "Hace calor", "Temperatura de confort", "El ambiente es seco", "El ambiente es bastante humedo", "La humedad en los valores correctos"};
 
     
     /* Measure temperature and humidity.  If the functions returns
@@ -91,47 +94,45 @@ void loop(){
     Serial.print( humidity, 1 );
     Serial.println( "%" );
 
+    mensajeTemperatura = ("T = ", temperature);
+    mensajeHumedad = ("H = ", humidity);
+
     if(temperature <= umbral_frio){
-        Serial.println("Hace frio");
+        Serial.println(mensajes[2]);
         digitalWrite(ledPinAzul , HIGH);
     }
 
     if(temperature >= umbral_calor){
-        Serial.println("Hace calor");
+        Serial.println(mensajes[3]);
         digitalWrite(ledPinRojo , HIGH);
     }
 
     if(temperature >= umbral_frio && temperature <= umbral_calor){
-        Serial.println("Temperatura de confort");
+        Serial.println(mensajes[4]);
         digitalWrite(ledPinVerde , HIGH);
     }
 
     if(humidity < umbral_seco){
-        Serial.println("El ambiente es seco");
+        Serial.println(mensajes[5]);
     }
 
     if(humidity > umbral_humedo){
-        Serial.println("El ambiente es bastante humedo");
+        Serial.println(mensajes[6]);
     }
 
     if(humidity >= umbral_seco && humidity <= umbral_humedo){
-        Serial.println("La humedad en el ambiente esta entre los valores correctos");
+        Serial.println(7);
     }
-     //delay(tiempoEspera);
 
      // Informacion que sacara el lcd en la fila de arriba
      lcd.print(temperature);
      //Escribimos en la fila de abajo
      lcd.setCursor(0,1);
-
      // Mensaje
      lcd.print(humidity);
+
      delay(tiempoEspera);
     }
-
-    //lcd.setCursor(0, 1);
-    //lcd.print(millis() / 1000);
-
 
    
 }
