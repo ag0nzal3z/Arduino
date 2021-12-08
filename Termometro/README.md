@@ -1,6 +1,6 @@
 # PROYECTO TERMOMETRO
 
-Proyecto en desarrollo
+Lee la temperatura y humedad del lugar en el que se encuentre. Si hace frio enciende el led azul, se hace calor enciende el led rojo, si la temperatura es la adecuada enciende el led verde. Ademas muestra por la pantalla lcd los valores y un mensaje referente a estos.
 
 ## COMPONENTES NECESARIOS
 
@@ -19,3 +19,21 @@ Proyecto en desarrollo
 16 x Cables de conexion (Mas o menos, dependiendo de las conexiones)
 
 1 x Protoboard
+
+Se puede alimentar por usb o mediante una pila de 9V
+
+## Organizacion del proyecto
+
+* Datasheet: Contiene la documentacion tecnica de cada componente
+
+* Fotos: Contiene fotos del proyecto
+
+* Librerias: Contiene las librerias necesarias para algunos componentes, deben de importarse en el IDE de Arduino
+
+* Termometro.ino: Programa principal que se cargara en el Arduino
+
+## Autor
+
+**Alberto Gonzalez**
+
+Contacto: *Bertito@protonmail.com*
