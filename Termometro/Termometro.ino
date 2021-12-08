@@ -71,13 +71,15 @@ void loop(){
     const float umbral_humedo = 69.9; 
     float temperature;
     float humidity;
+    String msgt;
+    String msgh;
     digitalWrite(ledPinRojo , LOW);
     digitalWrite(ledPinVerde , LOW);
     digitalWrite(ledPinAzul , LOW);
     // Limpiar la pantalla lcd
     lcd.clear();
     // Lista con los mensajes
-    String mensajes[] = {"T = ", "H = ", "Hace frio", "Hace calor", "Temperatura de confort", "El ambiente es seco", "El ambiente es bastante humedo", "La humedad en los valores correctos"};
+    String mensajes[] = {"T = ", "H = ", "Frio", "Calor", "Confort", "Seco", "Humedo", "Normal"};
 
     
     /* Measure temperature and humidity.  If the functions returns
@@ -91,29 +93,35 @@ void loop(){
     Serial.println( "%" );
 
     if(temperature <= umbral_frio){
+        msgt = mensajes[2];
         Serial.println(mensajes[2]);
         digitalWrite(ledPinAzul , HIGH);
     }
 
     if(temperature >= umbral_calor){
+        msgt = mensajes[3];
         Serial.println(mensajes[3]);
         digitalWrite(ledPinRojo , HIGH);
     }
 
     if(temperature >= umbral_frio && temperature <= umbral_calor){
+        msgt = mensajes[4];
         Serial.println(mensajes[4]);
         digitalWrite(ledPinVerde , HIGH);
     }
 
     if(humidity < umbral_seco){
+        msgh = mensajes[5];
         Serial.println(mensajes[5]);
     }
 
     if(humidity > umbral_humedo){
+        msgh = mensajes[6];
         Serial.println(mensajes[6]);
     }
 
     if(humidity >= umbral_seco && humidity <= umbral_humedo){
+        msgh = mensajes[7];
         Serial.println(7);
     }
 
@@ -127,14 +135,16 @@ void loop(){
     //Fila de arriba mensaje
     lcd.print("T = ");
     lcd.print(temperature);
-    lcd.print(" C");
+    lcd.print("C ");
+    lcd.print(msgt);
 
     lcd.setCursor(0,1);
     
     //Fila de abajo mensaje
     lcd.print("H = ");
     lcd.print(humidity);
-    lcd.print(" %");
+    lcd.print("% ");
+    lcd.print(msgh);
 
     delay(tiempoEspera);
     }
