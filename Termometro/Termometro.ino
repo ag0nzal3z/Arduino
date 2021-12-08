@@ -2,10 +2,11 @@
 Dependiendo de la temperatura enciende un led
 Luego muestra la temperatura y humedad por el lcd
 La humedad ideal para el hogar es de 50% con una temperatura de 20 grados
- */
+*/
+
 // Proyecto: Termometro
 // Autor: Alberto Gonzalez
-// Version: 0.5
+// Version: 0.6
 
 
 // Librerias del temperatura y humedad
@@ -48,7 +49,6 @@ void setup(){
 static bool measure_environment( float *temperature, float *humidity )
 {
     static unsigned long measurement_timestamp = millis( );
-
   /* Measure once every four seconds. */
     if( millis( ) - measurement_timestamp > 3000ul )
     {
@@ -58,7 +58,6 @@ static bool measure_environment( float *temperature, float *humidity )
         return( true );
     }
     }
-
     return( false );
 }
 
@@ -77,9 +76,6 @@ void loop(){
     digitalWrite(ledPinAzul , LOW);
     // Limpiar la pantalla lcd
     lcd.clear();
-    // Variables de los mensajes que se mostraran por el lcd
-    char mensajeTemperatura;
-    char mensajeHumedad;
     // Lista con los mensajes
     String mensajes[] = {"T = ", "H = ", "Hace frio", "Hace calor", "Temperatura de confort", "El ambiente es seco", "El ambiente es bastante humedo", "La humedad en los valores correctos"};
 
@@ -93,9 +89,6 @@ void loop(){
     Serial.print( " deg. C, H = " );
     Serial.print( humidity, 1 );
     Serial.println( "%" );
-
-    mensajeTemperatura = ("T = ", temperature);
-    mensajeHumedad = ("H = ", humidity);
 
     if(temperature <= umbral_frio){
         Serial.println(mensajes[2]);
@@ -124,15 +117,25 @@ void loop(){
         Serial.println(7);
     }
 
-     // Informacion que sacara el lcd en la fila de arriba
-     lcd.print(temperature);
-     //Escribimos en la fila de abajo
-     lcd.setCursor(0,1);
-     // Mensaje
-     lcd.print(humidity);
+    // Conversion de los valores de float a int, para mostrarlos por el lcd
+    int temp = int(temperature);
+    int humi = int(humidity);
+    int temperature = temp;
+    int humidity = humi;
+    
+    // Informacion que mostrara el lcd 
+    //Fila de arriba mensaje
+    lcd.print("T = ");
+    lcd.print(temperature);
+    lcd.print(" C");
 
-     delay(tiempoEspera);
+    lcd.setCursor(0,1);
+    
+    //Fila de abajo mensaje
+    lcd.print("H = ");
+    lcd.print(humidity);
+    lcd.print(" %");
+
+    delay(tiempoEspera);
     }
-
-   
 }
