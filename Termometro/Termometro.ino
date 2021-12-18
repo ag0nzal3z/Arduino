@@ -6,7 +6,7 @@ La humedad ideal para el hogar es de 50% con una temperatura de 20 grados
 
 // Proyecto: Termometro
 // Autor: Alberto Gonzalez
-// Version: 0.6
+// Version: 0.7
 
 
 // Librerias del temperatura y humedad
@@ -31,8 +31,6 @@ const int ledPinAzul = 3;
 const long int tiempoEspera = 30000;
 
 void setup(){
-    // Inicializamos el puerto serie (Modo debug)
-    Serial.begin( 9600);
     // Inicializamos el lcd
     lcd.begin(16, 2);
     // Definimos los pines de los led como salida
@@ -42,14 +40,11 @@ void setup(){
 
 }
 
-/*
- * Poll for a measurement, keeping the state machine alive.  Returns
- * true if a measurement is available.
- */
+// Funcion que realiza la medicion de temperatura y humedad 
 static bool measure_environment( float *temperature, float *humidity )
 {
     static unsigned long measurement_timestamp = millis( );
-  /* Measure once every four seconds. */
+  // Toma mediciones cada 4 segundos
     if( millis( ) - measurement_timestamp > 3000ul )
     {
     if( dht_sensor.measure( temperature, humidity ) == true )
@@ -60,8 +55,6 @@ static bool measure_environment( float *temperature, float *humidity )
     }
     return( false );
 }
-
-
 
 void loop(){
     // Variables
@@ -81,9 +74,7 @@ void loop(){
     // Lista con los mensajes
     String mensajes[] = {"T = ", "H = ", "Frio", "Calor", "Confort", "Seco", "Humedo", "Normal"};
 
-    
-    /* Measure temperature and humidity.  If the functions returns
-     true, then a measurement is available. */
+    // Comprueba si hay mediciones disponibles
     if( measure_environment( &temperature, &humidity ) == true )
     {
     Serial.print( "T = " );
@@ -94,35 +85,29 @@ void loop(){
 
     if(temperature <= umbral_frio){
         msgt = mensajes[2];
-        Serial.println(mensajes[2]);
         digitalWrite(ledPinAzul , HIGH);
     }
 
     if(temperature >= umbral_calor){
         msgt = mensajes[3];
-        Serial.println(mensajes[3]);
         digitalWrite(ledPinRojo , HIGH);
     }
 
     if(temperature >= umbral_frio && temperature <= umbral_calor){
         msgt = mensajes[4];
-        Serial.println(mensajes[4]);
         digitalWrite(ledPinVerde , HIGH);
     }
 
     if(humidity < umbral_seco){
         msgh = mensajes[5];
-        Serial.println(mensajes[5]);
     }
 
     if(humidity > umbral_humedo){
         msgh = mensajes[6];
-        Serial.println(mensajes[6]);
     }
 
     if(humidity >= umbral_seco && humidity <= umbral_humedo){
         msgh = mensajes[7];
-        Serial.println(7);
     }
 
     // Conversion de los valores de float a int, para mostrarlos por el lcd

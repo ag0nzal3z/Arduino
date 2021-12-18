@@ -1,3 +1,5 @@
+![Status](https://img.shields.io/badge/style-Termometro-green.svg?label=Arduino)
+
 # PROYECTO TERMOMETRO
 
 Lee la temperatura y humedad del lugar en el que se encuentre. Si hace frio enciende el led azul, se hace calor enciende el led rojo, si la temperatura es la adecuada enciende el led verde. Ademas muestra por la pantalla lcd los valores y un mensaje referente a estos.
